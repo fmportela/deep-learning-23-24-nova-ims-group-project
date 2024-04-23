@@ -195,7 +195,7 @@ class ModelVisualEvaluation:
         plt.figure(figsize=(10, 10))
         for i in range(n):
             plt.subplot(height, width, i + 1)
-            plt.imshow(images[i][0].astype("uint8"))
+            plt.imshow(images[i][0])
             plt.title(f'Predicted  Class: {images[i][2]}\nTrue class: {images[i][1]}', fontsize=8)
             plt.axis("off")
         
