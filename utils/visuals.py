@@ -33,13 +33,13 @@ class SampleVisuals:
         """
         height, width = grid_dim
         n = height * width
-        class_names = data.class_names
+        class_names = list(CLASS_INT_TO_STR.values())
         skips = np.random.choice(range(len(data)))
         plt.figure(figsize=(10, 10))
         for images, labels in data.skip(skips).take(batch_size):
             for i in range(n):
                 ax = plt.subplot(height, width, i + 1)
-                ax.imshow(images[i].numpy().astype("uint8"))
+                ax.imshow(images[i])
                 if label_mode == 'int':
                     ax.set_title(class_names[labels[i]])
                 elif label_mode == 'categorical':
