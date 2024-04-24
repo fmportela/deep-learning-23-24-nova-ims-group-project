@@ -2,7 +2,7 @@
 data/
 example/
 log_dir/
-model_dir/
+# model_dir/
 useful-papers/
 todo.txt
 
