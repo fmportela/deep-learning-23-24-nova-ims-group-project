@@ -20,6 +20,7 @@ class SampleVisuals:
     @staticmethod
     def show_random_sample(data: tf.data.Dataset,
                            batch_size: int,
+                           sup_title: str = None,
                            label_mode: str = 'categorical',
                            grid_dim: tuple = (3, 3)) -> None:
         """
@@ -34,9 +35,13 @@ class SampleVisuals:
         height, width = grid_dim
         n = height * width
         class_names = list(CLASS_INT_TO_STR.values())
-        skips = np.random.choice(range(len(data)))
+        data = data.rebatch(n)
+        ds_len = sum(1 for _ in iter(data))
+        skips = np.random.choice(range(ds_len))
         plt.figure(figsize=(10, 10))
-        for images, labels in data.skip(skips).take(batch_size):
+        if sup_title:
+            plt.suptitle(sup_title)
+        for images, labels in data.skip(skips).take(n):
             for i in range(n):
                 ax = plt.subplot(height, width, i + 1)
                 ax.imshow(images[i])
@@ -45,6 +50,9 @@ class SampleVisuals:
                 elif label_mode == 'categorical':
                     ax.set_title(class_names[np.where(labels[i]==1.0)[0][0]])
                 ax.axis("off")
+
+        plt.tight_layout()
+        plt.show()
 
     @staticmethod
     def show_class_sample(data: tf.data.Dataset,
@@ -203,3 +211,8 @@ class ModelVisualEvaluation:
             plt.suptitle('Random sample of INCORRECT classifications')
         else:
             plt.suptitle('Random sample of CORRECT classifications')
+
+
+if __name__ == '__main__':
+    #test
+    pass
