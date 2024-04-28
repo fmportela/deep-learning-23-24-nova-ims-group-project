@@ -56,7 +56,7 @@ class GradCAM:
     """
     def __init__(self, model: tf.keras.models.Model,
                  last_conv_layer_name: str) -> None:
-        self.grad_model = self.create_grad_model(model, last_conv_layer_name)
+        self.grad_model = GradCAM.create_grad_model(model, last_conv_layer_name)
     
     @staticmethod
     def create_grad_model(model: tf.keras.models.Model,
@@ -85,7 +85,11 @@ class GradCAM:
             last_conv_layer_output, preds = grad_model(batched_img_array)
             if pred_index is None:
                 pred_index = tf.argmax(preds[0])
-            class_channel = preds[:, pred_index]
+            
+            try:
+                class_channel = preds[:, pred_index]
+            except:
+                class_channel = tf.gather(preds, pred_index, axis=1)
 
         grads = tape.gradient(class_channel, last_conv_layer_output)
         pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))

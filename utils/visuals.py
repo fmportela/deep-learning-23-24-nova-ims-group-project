@@ -9,6 +9,7 @@ import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
 from .constants import CLASS_INT_TO_STR
+from .gradcam import GradCAM
 
 
 class SampleVisuals:
@@ -108,6 +109,9 @@ class ModelVisualEvaluation:
                                y_pred: np.ndarray,
                                show_class: Union[int, None] = None,
                                only_show_wrong: bool = True,
+                               create_gradcam_heatmap: bool = False,
+                               model: tf.keras.models.Model = None,
+                               last_conv_layer_name: str = None,
                                grid_size: tuple = (3, 3),
                                class_names: dict = CLASS_INT_TO_STR):
         """
@@ -161,7 +165,16 @@ class ModelVisualEvaluation:
                 # (image, true class, predicted class)
                images.append((img,
                               class_names[y_true[i]],
-                              class_names[y_pred[i]])) 
+                              class_names[y_pred[i]]))
+
+        # with grad cam heat map
+        if create_gradcam_heatmap:
+            gradcam = GradCAM(model=model, last_conv_layer_name=last_conv_layer_name)
+            for i, img_n_classes in enumerate(images):
+                batched_img_array = np.expand_dims(img_n_classes[0], axis=0)
+                superimposed_img = gradcam.get_superimposed_image(batched_img_array)
+                superimposed_img = (np.squeeze(superimposed_img)* 255).astype(np.uint8)
+                images[i] = (superimposed_img, img_n_classes[1], img_n_classes[2])
                
         # creating plot
         plt.figure(figsize=(10, 10))
