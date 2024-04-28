@@ -1,4 +1,8 @@
+"""
+Used constanst throughout the notebooks
+"""
 
+# class int to name mapping
 CLASS_INT_TO_STR = {
     0: 'acanthosis nigricans',
     1: 'acne',
