@@ -103,42 +103,6 @@ class SampleVisuals:
 class ModelVisualEvaluation:
     
     @staticmethod
-    def plot_history_f1(history: dict,
-                        figsize: tuple = (8, 4)) -> None:
-        """
-        Plots train and validation loss and F1 Score.
-        
-        Args:
-            history: history dictionary returned from
-                    tf.keras.model.fit method.
-            figsize: figure size. Defaults to (8, 4).
-        
-        Returns:
-            None, it displays and image.
-        """
-        f1 = history['f1_score']
-        val_f1 = history['val_f1_score']
-        loss = history['loss']
-        val_loss = history['val_loss']
-
-        epochs = range(1, len(f1) + 1)
-
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize)
-
-        ax1.plot(epochs, f1, 'bo', label='Training F1')
-        ax1.plot(epochs, val_f1, 'b', label='Validation F1')
-        ax1.set_title('Training and validation F1 Score')
-        ax1.legend()
-
-        ax2.plot(epochs, loss, 'bo', label='Training loss')
-        ax2.plot(epochs, val_loss, 'b', label='validation loss')
-        ax2.set_title('Training and validation loss')
-        ax2.legend()
-
-        plt.tight_layout()
-        plt.show()
-    
-    @staticmethod
     def plot_prediction_sample(X: np.ndarray,
                                y_true: np.ndarray,
                                y_pred: np.ndarray,
