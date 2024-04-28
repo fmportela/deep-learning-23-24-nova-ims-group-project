@@ -173,7 +173,7 @@ class ModelVisualEvaluation:
             for i, img_n_classes in enumerate(images):
                 batched_img_array = np.expand_dims(img_n_classes[0], axis=0)
                 superimposed_img = gradcam.get_superimposed_image(batched_img_array)
-                superimposed_img = (np.squeeze(superimposed_img)* 255).astype(np.uint8)
+                superimposed_img = np.squeeze(superimposed_img)
                 images[i] = (superimposed_img, img_n_classes[1], img_n_classes[2])
                
         # creating plot
